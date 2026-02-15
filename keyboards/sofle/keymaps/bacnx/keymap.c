@@ -3,6 +3,9 @@
 // Base layer: Home Row Mods (tap = chữ, giữ = mod)
 
 #include QMK_KEYBOARD_H
+#ifdef OLED_ENABLE
+#    include "bongocat.h"
+#endif
 
 // ============ Layers ============
 enum layers {
@@ -98,7 +101,8 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 
 bool oled_task_user(void) {
     if (!is_keyboard_master()) {
-        return true; // slave: dùng code mặc định (logo)
+        render_bongocat_slave();
+        return false; // slave: Bongo cat, không dùng logo mặc định
     }
     // Master: layer + mod đang giữ + lock keys (+ WPM nếu bật)
     oled_set_cursor(0, 0);
@@ -107,8 +111,7 @@ bool oled_task_user(void) {
     // Dòng 1: Layer (BASE ngắn hơn nên thêm 1 xuống dòng cho đồng bộ với LOWER/RAISE/ADJUST)
     switch (get_highest_layer(layer_state)) {
         case _BASE:
-            oled_write_ln_P(PSTR("BASE"), false);
-            oled_write_P(PSTR("\n"), false);
+            oled_write_ln_P(PSTR("BASE\n"), false);
             break;
         case _LOWER:
             oled_write_ln_P(PSTR("LOWER"), false);
@@ -117,7 +120,7 @@ bool oled_task_user(void) {
             oled_write_ln_P(PSTR("RAISE"), false);
             break;
         case _ADJUST:
-            oled_write_ln_P(PSTR("ADJUST"), false);
+            oled_write_ln_P(PSTR("ADJ\n"), false);
             break;
         default:
             oled_write_ln_P(PSTR("?"), false);
@@ -134,7 +137,7 @@ bool oled_task_user(void) {
 
     // Dòng 3: Lock keys (C/N/S), chữ đảo khi bật
     led_t led = host_keyboard_led_state();
-    oled_write_P(PSTR("Lck\n"), false);
+    oled_write_P(PSTR("Lock\n"), false);
     oled_write_P(PSTR("C "), led.caps_lock);
     oled_write_P(PSTR("N "), led.num_lock);
     oled_write_ln_P(PSTR("S"), led.scroll_lock);

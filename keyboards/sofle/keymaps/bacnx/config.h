@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #pragma once
 
+// ---------- Split: đồng bộ WPM sang nửa slave (để Bongo cat phản ứng theo gõ) ----------
+#define SPLIT_WPM_ENABLE
+
 // ---------- Tri-layer (giữ LOWER + RAISE → ADJUST) ----------
 #define TRI_LAYER_LOWER_LAYER  1  // _LOWER
 #define TRI_LAYER_UPPER_LAYER  2  // _RAISE
