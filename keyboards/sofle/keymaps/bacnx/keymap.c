@@ -12,7 +12,8 @@ enum layers {
     _BASE,  // 0: QWERTY + Home Row Mods
     _LOWER, // 1: Số + ký hiệu (coding)
     _RAISE, // 2: Nav + tmux/neovim
-    _ADJUST // 3: Tri-layer (LOWER+RAISE) — volume, reset
+    _ADJUST, // 3: Tri-layer (LOWER+RAISE) — volume, reset
+    _MOUSE  // 4: Điều khiển chuột (toggle Space+Enter), h/j/k/l = move, scroll U/N Y/M
 };
 
 // ============ Base: QWERTY + Home Row Mods ============
@@ -77,13 +78,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,
                  _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
     ),
+
+    /*
+     * MOUSE — toggle bằng Space+Enter. h/j/k/l = di chuyển, U/N = scroll dọc, Y/M = scroll ngang.
+     * F = click trái (MS_BTN1), G = click phải (MS_BTN2). S/D = ACL2/ACL1 (move/scroll dày).
+     * Giữ Space+Enter ở thumb để toggle tắt.
+     */
+    [_MOUSE] = LAYOUT(
+        _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,       MS_WHLL, MS_WHLU, _______, _______, _______, _______,
+        _______, _______, MS_ACL2, MS_ACL1, MS_BTN1, MS_BTN2,       MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, MS_WHLD, MS_WHLR, _______, _______, _______, _______,
+                 _______, _______, _______, _______, KC_SPC,        KC_ENT,  _______, _______, _______, _______
+    ),
     // clang-format on
 };
 
-const uint16_t PROGMEM jk_combo[] = {RSFT_T(KC_J), RCTL_T(KC_K), COMBO_END};
+const uint16_t PROGMEM jk_combo[]           = {RSFT_T(KC_J), RCTL_T(KC_K), COMBO_END};
+const uint16_t PROGMEM space_enter_combo[]  = {KC_SPC, KC_ENT, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(jk_combo, KC_ESC),
+    COMBO(space_enter_combo, TG(_MOUSE)),
 };
 
 // ---------- OLED (nếu bật OLED_ENABLE) ----------
@@ -121,6 +137,9 @@ bool oled_task_user(void) {
             break;
         case _ADJUST:
             oled_write_ln_P(PSTR("ADJ\n"), false);
+            break;
+        case _MOUSE:
+            oled_write_ln_P(PSTR("MOUSE"), false);
             break;
         default:
             oled_write_ln_P(PSTR("?"), false);
