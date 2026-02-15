@@ -48,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
         KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_F12,
         _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PIPE,
-        _______, KC_EQL,  KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, _______, _______, KC_LBRC, KC_RBRC, KC_SCLN, KC_COLN, KC_BSLS, _______,
+        _______, KC_EQL,  KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, _______, _______, KC_LBRC, KC_RBRC, KC_GRV,  KC_COLN, KC_BSLS, _______,
                  _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
     ),
 
@@ -76,3 +76,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // clang-format on
 };
+
+const uint16_t PROGMEM jk_combo[] = {RSFT_T(KC_J), RCTL_T(KC_K), COMBO_END};
+
+combo_t key_combos[] = {
+    COMBO(jk_combo, KC_ESC),
+};
+
+// ---------- Encoder: trái = volume (default), phải = scroll chuột ----------
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (index == 1) {
+        // Encoder phải: scroll chuột (tốc độ chỉnh bằng ENCODER_SCROLL_STEPS và MOUSEKEY_WHEEL_DELTA trong config.h)
+#ifdef MOUSEKEY_ENABLE
+        for (uint8_t i = 0; i < ENCODER_SCROLL_STEPS; i++) {
+            if (clockwise) {
+                tap_code(MS_WHLD); // scroll xuống
+            } else {
+                tap_code(MS_WHLU); // scroll lên
+            }
+        }
+        return false; // đã xử lý, không chạy hành vi mặc định (PgUp/PgDn)
+#else
+        (void)clockwise;
+        return true;
+#endif
+    }
+    return true; // encoder trái: để default (volume)
+}
