@@ -83,6 +83,74 @@ combo_t key_combos[] = {
     COMBO(jk_combo, KC_ESC),
 };
 
+// ---------- OLED (nếu bật OLED_ENABLE) ----------
+// Sofle đã bật OLED trong info.json. Code mặc định ở sofle.c:
+// - Nửa master: layer + caps (Qwrt/Clmk/Mod, Base/Lower/Raise/Adjust).
+// - Nửa slave: logo QMK.
+// Để tùy chỉnh: implement oled_task_user(), return false = không chạy code mặc định.
+#ifdef OLED_ENABLE
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+    if (!is_keyboard_master()) {
+        return OLED_ROTATION_180; // nửa phải (slave) xoay 180° cho dễ nhìn
+    }
+    return rotation; // nửa trái dùng rotation từ oled_init_kb (270°)
+}
+
+bool oled_task_user(void) {
+    if (!is_keyboard_master()) {
+        return true; // slave: dùng code mặc định (logo)
+    }
+    // Master: layer + mod đang giữ + lock keys (+ WPM nếu bật)
+    oled_set_cursor(0, 0);
+    oled_write_P(PSTR("\n"), false);
+
+    // Dòng 1: Layer (BASE ngắn hơn nên thêm 1 xuống dòng cho đồng bộ với LOWER/RAISE/ADJUST)
+    switch (get_highest_layer(layer_state)) {
+        case _BASE:
+            oled_write_ln_P(PSTR("BASE"), false);
+            oled_write_P(PSTR("\n"), false);
+            break;
+        case _LOWER:
+            oled_write_ln_P(PSTR("LOWER"), false);
+            break;
+        case _RAISE:
+            oled_write_ln_P(PSTR("RAISE"), false);
+            break;
+        case _ADJUST:
+            oled_write_ln_P(PSTR("ADJUST"), false);
+            break;
+        default:
+            oled_write_ln_P(PSTR("?"), false);
+    }
+
+    // Dòng 2: Mod đang giữ (S/C/A/G) — hữu ích cho Home Row Mods
+    uint8_t mods = get_mods();
+    oled_write_P(PSTR("Mod \n"), false);
+    oled_write_P((mods & MOD_MASK_SHIFT) ? PSTR("S") : PSTR("-"), false);
+    oled_write_P((mods & MOD_MASK_CTRL) ? PSTR("C") : PSTR("-"), false);
+    oled_write_P((mods & MOD_MASK_ALT) ? PSTR("A") : PSTR("-"), false);
+    oled_write_ln_P((mods & MOD_MASK_GUI) ? PSTR("G") : PSTR("-"), false);
+    oled_write_P(PSTR("\n"), false);
+
+    // Dòng 3: Lock keys (C/N/S), chữ đảo khi bật
+    led_t led = host_keyboard_led_state();
+    oled_write_P(PSTR("Lck\n"), false);
+    oled_write_P(PSTR("C "), led.caps_lock);
+    oled_write_P(PSTR("N "), led.num_lock);
+    oled_write_ln_P(PSTR("S"), led.scroll_lock);
+    oled_write_P(PSTR("\n"), false);
+
+#    ifdef WPM_ENABLE
+    // Dòng 4: WPM (cần thêm WPM_ENABLE = yes trong rules.mk)
+    oled_write_P(PSTR("WPM\n"), false);
+    oled_write(get_u8_str(get_current_wpm(), '0'), false);
+    oled_write_ln_P(PSTR("  "), false);
+#    endif
+
+    return false;
+}
+#endif
+
 // ---------- Encoder: trái = volume (default), phải = scroll chuột ----------
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 1) {
