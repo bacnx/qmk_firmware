@@ -9,11 +9,11 @@
 
 // ============ Layers ============
 enum layers {
-    _BASE,  // 0: QWERTY + Home Row Mods
-    _LOWER, // 1: Số + ký hiệu (coding)
-    _RAISE, // 2: Nav + tmux/neovim
+    _BASE,   // 0: QWERTY + Home Row Mods
+    _LOWER,  // 1: Số + ký hiệu (coding)
+    _RAISE,  // 2: Nav + tmux/neovim
     _ADJUST, // 3: Tri-layer (LOWER+RAISE) — volume, reset
-    _MOUSE  // 4: Điều khiển chuột (toggle Space+Enter), h/j/k/l = move, scroll U/N Y/M
+    _MOUSE   // 4: Điều khiển chuột (toggle Space+Enter), h/j/k/l = move, scroll U/N Y/M
 };
 
 // ============ Base: QWERTY + Home Row Mods ============
@@ -57,14 +57,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * RAISE — nav, tmux/neovim
-     * Mũi tên, Home/End, PgUp/Dn, Copy/Paste, word nav
+     * RAISE — Mũi tên, Home/End, PgUp/Dn
      */
     [_RAISE] = LAYOUT(
         _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-        _______, KC_INS,  KC_PSCR, KC_APP,  _______, _______,       KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_DEL,  KC_BSPC,
-        _______, _______, _______, _______, _______, _______,       KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
-        _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, KC_ESC,  _______, _______, _______, _______,       KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_BSPC, _______,
+        _______, KC_TAB,  _______, _______, _______, _______,       KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_QUOT, _______,
+        _______, _______, KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                  _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
     ),
 
@@ -94,8 +93,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // clang-format on
 };
 
-const uint16_t PROGMEM jk_combo[]           = {RSFT_T(KC_J), RCTL_T(KC_K), COMBO_END};
-const uint16_t PROGMEM space_enter_combo[]  = {KC_SPC, KC_ENT, COMBO_END};
+const uint16_t PROGMEM jk_combo[]          = {RSFT_T(KC_J), RCTL_T(KC_K), COMBO_END};
+const uint16_t PROGMEM space_enter_combo[] = {KC_SPC, KC_ENT, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(jk_combo, KC_ESC),
@@ -117,6 +116,12 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 
 bool oled_task_user(void) {
     if (!is_keyboard_master()) {
+#    if defined(SPLIT_ACTIVITY_ENABLE) && (OLED_TIMEOUT > 0)
+        // Đồng bộ timeout với nửa master: reset oled_timeout khi còn activity (từ cả 2 nửa)
+        if (last_input_activity_elapsed() < OLED_TIMEOUT) {
+            oled_on();
+        }
+#    endif
         render_bongocat_slave();
         return false; // slave: Bongo cat, không dùng logo mặc định
     }
@@ -154,12 +159,9 @@ bool oled_task_user(void) {
     oled_write_ln_P((mods & MOD_MASK_GUI) ? PSTR("G") : PSTR("-"), false);
     oled_write_P(PSTR("\n"), false);
 
-    // Dòng 3: Lock keys (C/N/S), chữ đảo khi bật
+    // Dòng 3: chỉ caps/CAPS
     led_t led = host_keyboard_led_state();
-    oled_write_P(PSTR("Lock\n"), false);
-    oled_write_P(PSTR("C "), led.caps_lock);
-    oled_write_P(PSTR("N "), led.num_lock);
-    oled_write_ln_P(PSTR("S"), led.scroll_lock);
+    oled_write_ln_P(led.caps_lock ? PSTR("CAPS") : PSTR("Caps"), false);
     oled_write_P(PSTR("\n"), false);
 
 #    ifdef WPM_ENABLE
