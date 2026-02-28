@@ -9,9 +9,9 @@
 #define OLED_TIMEOUT 5 * 60000 // ms: tắt OLED sau 5m không hoạt động (dùng chung cả 2 nửa)
 
 // ---------- Tri-layer (giữ LOWER + RAISE → ADJUST) ----------
-#define TRI_LAYER_LOWER_LAYER 1  // _LOWER
-#define TRI_LAYER_UPPER_LAYER 2  // _RAISE
-#define TRI_LAYER_ADJUST_LAYER 3 // _ADJUST
+#define TRI_LAYER_LOWER_LAYER 3  // _LOWER
+#define TRI_LAYER_UPPER_LAYER 4  // _RAISE
+#define TRI_LAYER_ADJUST_LAYER 5 // _ADJUST
 
 // ---------- Home Row Mods — tap/hold thoải mái hơn ----------
 #define TAPPING_TERM 200 // ms: tap nhanh = chữ, giữ lâu = mod
