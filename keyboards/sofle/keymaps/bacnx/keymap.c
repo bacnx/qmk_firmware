@@ -9,14 +9,14 @@
 
 // ============ Layers ============
 enum layers {
-    _COLEMAK_DH,  // 0: Colemak-DH + Home Row Mods (mặc định)
-    _QWERTY,      // 1: QWERTY + Home Row Mods
-    _LAYER_SELECT,// 2: Giữ nút trái trên + 1/2/3 = Colemak DH / QWERTY / LOL
-    _LOWER,       // 3: Số + ký hiệu (coding)
-    _RAISE,       // 4: Nav + tmux/neovim
-    _ADJUST,      // 5: Tri-layer (LOWER+RAISE) — volume, reset
-    _MOUSE,       // 6: Điều khiển chuột (toggle Space+Enter)
-    _LOL          // 7: Liên Minh Huyền Thoại — chỉ mảnh trái, mảnh phải tắt
+    _COLEMAK_DH,   // 0: Colemak-DH + Home Row Mods (mặc định)
+    _QWERTY,       // 1: QWERTY + Home Row Mods
+    _LAYER_SELECT, // 2: Giữ nút trái trên + 1/2/3 = Colemak DH / QWERTY / LOL
+    _LOWER,        // 3: Số + ký hiệu (coding)
+    _RAISE,        // 4: Nav + tmux/neovim
+    _ADJUST,       // 5: Tri-layer (LOWER+RAISE) — volume, reset
+    _MOUSE,        // 6: Điều khiển chuột (toggle Space+Enter)
+    _LOL           // 7: Liên Minh Huyền Thoại — chỉ mảnh trái, mảnh phải tắt
 };
 
 // ============ Base layers: Colemak-DH / QWERTY + Home Row Mods ============
@@ -121,9 +121,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_MOUSE] = LAYOUT(
         _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,       MS_WHLL, MS_WHLU, _______, _______, _______, _______,
-        _______, _______, MS_ACL2, MS_ACL1, MS_BTN1, MS_BTN2,       MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, MS_WHLD, MS_WHLR, _______, _______, _______, _______,
+        _______, _______, _______, _______, _______, _______,       MS_WHLU, _______, MS_WHLL, MS_WHLR, _______, _______,
+        _______, _______, MS_ACL2, MS_ACL1, MS_BTN1, MS_BTN2,       MS_WHLD, MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                  _______, _______, _______, _______, KC_SPC,        KC_ENT,  _______, _______, _______, _______
     ),
 
