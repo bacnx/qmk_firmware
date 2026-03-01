@@ -27,24 +27,24 @@ enum layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // clang-format off
     /*
-     * COLEMAK-DH (layer 0, mặc định)
+     * COLEMAK-DH (layer 0) — theo layout chuẩn
      * ,-----------------------------------------.     ,-----------------------------------------.
      * |LaySel|  1   |  2   |  3   |  4   |  5   |     |  6   |  7   |  8   |  9   |  0   |  `   |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
-     * | Esc  |  Q   |  W   |  F   |  P   |  G   |     |  J   |  L   |  U   |  Y   |  ;   | Bspc |
+     * | Esc  |  Q   |  W   |  F   |  P   |  B   |     |  J   |  L   |  U   |  Y   |  ;   | Bspc |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
-     * | Tab  |A/Gui |R/Alt |S/Ctl |T/Sft |  D   |     |  H   |N/Sft |E/Ctl |I/Alt |O/Gui |  '   |
+     * | Tab  |A/Gui |R/Alt |S/Ctl |T/Sft |  G   |     |  M   |N/Sft |E/Ctl |I/Alt |O/Gui |  '   |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
-     * | Shift|  Z   |  X   |  C   |  V   |  B   |     |  K   |  M   |  ,   |  .   |  /   | Shift|
+     * | Shift|  Z   |  X   |  C   |  D   |  V   |     |  K   |  H   |  ,   |  .   |  /   | Shift|
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
      *       | Gui  | Alt  | Ctl  |LOWER |Space |     | Enter| RAISE| Ctl  | Alt  | Gui  |
      *       `-----------------------------------'     `-----------------------------------'
      */
     [_COLEMAK_DH] = LAYOUT(
         MO(_LAYER_SELECT),  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
-        KC_ESC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,         KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC,
-        KC_TAB,  LGUI_T(KC_A), LALT_T(KC_R), LCTL_T(KC_S), LSFT_T(KC_T), KC_D,   KC_H,    RSFT_T(KC_N), RCTL_T(KC_E), RALT_T(KC_I), RGUI_T(KC_O), KC_QUOT,
-        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_NO,  KC_NO,  KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+        KC_ESC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,         KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC,
+        KC_TAB,  LGUI_T(KC_A), LALT_T(KC_R), LCTL_T(KC_S), LSFT_T(KC_T), KC_G,   KC_M,    RSFT_T(KC_N), RCTL_T(KC_E), RALT_T(KC_I), RGUI_T(KC_O), KC_QUOT,
+        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,   KC_NO,  KC_NO,  KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
                  KC_LGUI, KC_LALT, KC_LCTL, TL_LOWR, KC_SPC,        KC_ENT,  TL_UPPR, KC_RCTL, KC_RALT, KC_RGUI
     ),
 
@@ -128,14 +128,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * LOL — LMHT. Hàng 1: Layer+F1–F5. Hàng 2: B recall, 1–5 đồ. Hàng 3: Tab A QWER. Hàng 4: Ctrl Z X C D F. Thumb: Alt Ctl G(ping) Space. Phải tắt.
+     * LOL — LMHT. Hàng 1: TO(Colemak) F1–F5. Hàng 2: B 1–5. Hàng 3: Tab A QWER. Hàng 4: Ctrl Z X C D F. Thumb: Ctrl+6 P T G Space. Phải tắt.
      */
     [_LOL] = LAYOUT(
-        MO(_LAYER_SELECT),  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+        TO(_COLEMAK_DH),   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
         KC_B,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
         KC_TAB,  KC_A,    KC_Q,    KC_W,    KC_E,    KC_R,          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_D,    KC_F,    KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-            TO(_COLEMAK_DH), KC_P, KC_T, KC_G,    KC_SPC,         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO
+                 LCTL(KC_6), KC_P, KC_T,    KC_G,    KC_SPC,         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO
     ),
     // clang-format on
 };
