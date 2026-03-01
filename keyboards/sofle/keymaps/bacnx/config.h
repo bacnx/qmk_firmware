@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 #pragma once
 
+// ---------- Split handedness: trái/phải theo chân D4, không phụ thuộc bên cắm USB ----------
+#define SPLIT_HAND_PIN D4
+#define SPLIT_HAND_PIN_LOW_IS_LEFT
+
 // ---------- Split: đồng bộ WPM sang nửa slave (để Bongo cat phản ứng theo gõ) ----------
 #define SPLIT_WPM_ENABLE
 // Đồng bộ trạng thái bật/tắt OLED và activity giữa 2 nửa → timeout tắt OLED giống nhau
