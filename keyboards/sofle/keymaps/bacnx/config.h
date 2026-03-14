@@ -5,6 +5,9 @@
 #define SPLIT_HAND_PIN D4
 #define SPLIT_HAND_PIN_LOW_IS_LEFT
 
+// Enable watchdog to prevent split keyboard from losing USB detection in BIOS
+#define SPLIT_WATCHDOG_ENABLE
+
 // ---------- Split: đồng bộ WPM sang nửa slave (để Bongo cat phản ứng theo gõ) ----------
 #define SPLIT_WPM_ENABLE
 // Đồng bộ trạng thái bật/tắt OLED và activity giữa 2 nửa → timeout tắt OLED giống nhau
