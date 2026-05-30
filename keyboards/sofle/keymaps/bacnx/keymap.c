@@ -10,24 +10,24 @@
 // ============ Layers ============
 enum layers {
     _COLEMAK_DH,   // 0: Colemak-DH + Home Row Mods (mặc định)
-    _QWERTY,       // 1: QWERTY + Home Row Mods
-    _LAYER_SELECT, // 2: Giữ nút trái trên + 1/2/3 = Colemak DH / QWERTY / LOL
-    _LOWER,        // 3: Số + ký hiệu (coding)
-    _RAISE,        // 4: Nav + tmux/neovim
+    _GAME,         // 1: QWERTY thuần (không HRM) — chế độ game
+    _LAYER_SELECT, // 2: Giữ nút trái trên + 1/2/3 = Colemak DH / GAME / LOL
+    _LOWER,        // 3: Số + ký hiệu (Sweep parity)
+    _RAISE,        // 4: Nav (Sweep parity)
     _ADJUST,       // 5: Tri-layer (LOWER+RAISE) — volume, reset
     _MOUSE,        // 6: Điều khiển chuột (toggle Space+Enter)
     _LOL           // 7: Liên Minh Huyền Thoại — chỉ mảnh trái, mảnh phải tắt
 };
 
-// ============ Base layers: Colemak-DH / QWERTY + Home Row Mods ============
-// Trái:  A=Gui  R/S=Alt  S/D=Ctrl  T/F=Shift  — Colemak: A R S T D / Qwerty: A S D F G
-// Phải:  H N E I O / J K L ; — N/J=Shift  E/K=Ctrl  I/L=Alt  O/;=Gui
-// Nút trái trên: giữ = layer select, 1 = Colemak DH, 2 = QWERTY.
+// ============ Base layer: Colemak-DH + Home Row Mods (Sweep parity) ============
+// Trái:  A=Gui  R=Alt  S=Ctrl  T=Shift
+// Phải:  N=Shift  E=Ctrl  I=Alt  O=Gui
+// Nút trái trên: giữ = LAYER_SELECT, +1 = Colemak DH, +2 = GAME, +3 = LOL.
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // clang-format off
     /*
-     * COLEMAK-DH (layer 0) — theo layout chuẩn
+     * COLEMAK-DH (layer 0) — Sweep-style thumb cluster
      * ,-----------------------------------------.     ,-----------------------------------------.
      * |LaySel|  1   |  2   |  3   |  4   |  5   |     |  6   |  7   |  8   |  9   |  0   |  `   |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
@@ -37,44 +37,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
      * | Shift|  Z   |  X   |  C   |  D   |  V   |     |  K   |  H   |  ,   |  .   |  /   | Shift|
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
-     *       | Gui  | Alt  | Ctl  |LOWER |Space |     | Enter| RAISE| Ctl  | Alt  | Gui  |
+     *       | --   | --   | --   |LOW/⌫ |Space |     | Enter|RAI/⇥ |  --  |  --  |  --  |
      *       `-----------------------------------'     `-----------------------------------'
+     * Inner thumbs: tap = Bspc/Tab, hold = Lower/Raise layer (Sweep parity).
      */
     [_COLEMAK_DH] = LAYOUT(
         MO(_LAYER_SELECT),  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
         KC_ESC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,         KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC,
         KC_TAB,  LGUI_T(KC_A), LALT_T(KC_R), LCTL_T(KC_S), LSFT_T(KC_T), KC_G,   KC_M,    RSFT_T(KC_N), RCTL_T(KC_E), RALT_T(KC_I), RGUI_T(KC_O), KC_QUOT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,   KC_NO,  KC_NO,  KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-                 KC_LGUI, KC_LALT, KC_LCTL, TL_LOWR, KC_SPC,        KC_ENT,  TL_UPPR, KC_RCTL, KC_RALT, KC_RGUI
+                 KC_NO,   KC_NO,   KC_NO,   LT(_LOWER, KC_BSPC), KC_SPC,    KC_ENT,  LT(_RAISE, KC_TAB), KC_NO,  KC_NO,   KC_NO
     ),
 
     /*
-     * QWERTY (layer 1)
+     * GAME (layer 1) — QWERTY thuần, KHÔNG home row mods, cảm giác bàn phím thường để chơi game.
+     * Thoát: giữ nút trái trên (LaySel) + 1 → về Colemak DH.
      * ,-----------------------------------------.     ,-----------------------------------------.
      * |LaySel|  1   |  2   |  3   |  4   |  5   |     |  6   |  7   |  8   |  9   |  0   |  `   |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
      * | Esc  |  Q   |  W   |  E   |  R   |  T   |     |  Y   |  U   |  I   |  O   |  P   | Bspc |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
-     * | Tab  |A/Gui |S/Alt |D/Ctl |F/Sft |  G   |     |  H   |J/Sft |K/Ctl |L/Alt |;/Gui |  '   |
+     * | Tab  |  A   |  S   |  D   |  F   |  G   |     |  H   |  J   |  K   |  L   |  ;   |  '   |
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
      * | Shift|  Z   |  X   |  C   |  V   |  B   |     |  N   |  M   |  ,   |  .   |  /   | Shift|
      * |------+------+------+------+------+------|     |------+------+------+------+------+------|
-     *       | Gui  | Alt  | Ctl  |LOWER |Space |     | Enter| RAISE| Ctl  | Alt  | Gui  |
+     *       | Gui  | Alt  | Ctl  |Space |Space |     | Enter| Bspc | Ctl  | Alt  | Gui  |
      *       `-----------------------------------'     `-----------------------------------'
      */
-    [_QWERTY] = LAYOUT(
+    [_GAME] = LAYOUT(
         MO(_LAYER_SELECT),  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
         KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-        KC_TAB,  LGUI_T(KC_A), LALT_T(KC_S), LCTL_T(KC_D), LSFT_T(KC_F), KC_G,   KC_H,    RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), RGUI_T(KC_SCLN), KC_QUOT,
+        KC_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_NO,  KC_NO,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-                 KC_LGUI, KC_LALT, KC_LCTL, TL_LOWR, KC_SPC,        KC_ENT,  TL_UPPR, KC_RCTL, KC_RALT, KC_RGUI
+                 KC_LGUI, KC_LALT, KC_LCTL, KC_SPC,  KC_SPC,       KC_ENT,  KC_BSPC, KC_RCTL, KC_RALT, KC_RGUI
     ),
 
     /*
-     * LAYER_SELECT — giữ nút trái trên + 1 = Colemak DH, + 2 = QWERTY, + 3 = LOL
+     * LAYER_SELECT — giữ nút trái trên + 1 = Colemak DH, + 2 = GAME, + 3 = LOL
      */
     [_LAYER_SELECT] = LAYOUT(
-        _______, TO(_COLEMAK_DH), TO(_QWERTY), TO(_LOL), _______, _______,   _______, _______, _______, _______, _______, _______,
+        _______, TO(_COLEMAK_DH), TO(_GAME), TO(_LOL), _______, _______,   _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -82,24 +84,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * LOWER — số, ký hiệu, F-keys (coding)
+     * LOWER — Sweep Num/Sym. F1–F12 ở hàng số bonus của Sofle.
+     * Hàng top alpha: ! @ # $ % ^ & * ( )
+     * Hàng home    : 1 2 3 4 5 6 7 8 9 0
+     * Hàng bot alpha: ` - = [ ] \ ' ; _ |
      */
     [_LOWER] = LAYOUT(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,         KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_F12,
-        _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PIPE,
-        _______, KC_EQL,  KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, _______, _______, KC_LBRC, KC_RBRC, KC_GRV, KC_QUOT, KC_BSLS, _______,
+        _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_F12,
+        _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
+        _______, KC_GRV,  KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, _______, _______, KC_BSLS, KC_QUOT, KC_SCLN, KC_UNDS, KC_PIPE, _______,
                  _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
     ),
 
     /*
-     * RAISE — Mũi tên, Home/End, PgUp/Dn
+     * RAISE — Sweep Nav. Mũi tên trên hàng home phải (vị trí N/E/I/O Colemak).
+     * Hàng top: ESC INS - PSCRN - / - PGUP DEL - -
+     * Hàng home: CAPS - - - - / HOME LEFT DOWN UP RIGHT
+     * Hàng bot : - Ctl-Z Ctl-X Ctl-C Ctl-V / END PGDN - - -
      */
     [_RAISE] = LAYOUT(
         _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-        _______, KC_ESC,  _______, _______, _______, _______,       _______, KC_PGUP, KC_PGDN, KC_HOME, KC_END, _______,
-        _______, KC_TAB,  KC_BSPC, _______, _______, _______,       _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,
-        _______, _______, KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        KC_ESC,  KC_INS,  _______, KC_PSCR, _______, _______,       _______, KC_PGUP, KC_DEL,  _______, _______, _______,
+        KC_CAPS, _______, _______, _______, _______, _______,       KC_HOME, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,
+        _______, _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V), _______, _______, KC_END, KC_PGDN, _______, _______, _______, _______,
                  _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
     ),
 
@@ -115,15 +123,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * MOUSE — toggle bằng Space+Enter. h/j/k/l = di chuyển, U/N = scroll dọc, Y/M = scroll ngang.
-     * F = click trái (MS_BTN1), G = click phải (MS_BTN2). S/D = ACL2/ACL1 (move/scroll dày).
-     * Giữ Space+Enter ở thumb để toggle tắt.
+     * MOUSE — Sweep parity. Toggle bằng combo Space+Enter ở thumb.
+     * Trái: scroll trên Q/W/F/P; R/S = ACL0/ACL2 (chậm/nhanh); T = LCLK, G = RCLK; B = MB4 (back); D = MCLK; V = MB5 (fwd).
+     * Phải: di chuyển trên hàng home N/E/I/O (Colemak).
      */
     [_MOUSE] = LAYOUT(
         _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______,       MS_WHLU, _______, MS_WHLL, MS_WHLR, _______, _______,
-        _______, _______, MS_ACL2, MS_ACL1, MS_BTN1, MS_BTN2,       MS_WHLD, MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+        _______, MS_WHLL, MS_WHLD, MS_WHLU, MS_WHLR, _______,       _______, _______, _______, _______, _______, _______,
+        _______, MS_ACL0, MS_BTN4, MS_ACL2, MS_BTN1, MS_BTN2,       _______, MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, _______,
+        _______, _______, _______, _______, MS_BTN3, MS_BTN5, _______, _______, _______, _______, _______, _______, _______, _______,
                  _______, _______, _______, _______, KC_SPC,        KC_ENT,  _______, _______, _______, _______
     ),
 
@@ -140,16 +148,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // clang-format on
 };
 
-// J+K (QWERTY) hoặc N+E (Colemak DH) — cùng vị trí phím → Esc
-const uint16_t PROGMEM jk_combo[]          = {RSFT_T(KC_J), RCTL_T(KC_K), COMBO_END};
+// N+E (Colemak DH HRM) → Esc; J+K (GAME layer, plain keycode) → Esc; Space+Enter (thumb) → toggle Mouse.
 const uint16_t PROGMEM ne_combo[]          = {RSFT_T(KC_N), RCTL_T(KC_E), COMBO_END};
+const uint16_t PROGMEM game_jk_combo[]     = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM space_enter_combo[] = {KC_SPC, KC_ENT, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(jk_combo, KC_ESC),
     COMBO(ne_combo, KC_ESC),
+    COMBO(game_jk_combo, KC_ESC),
     COMBO(space_enter_combo, TG(_MOUSE)),
 };
+
+// Tri-layer thủ công: LT() không tự kích tri-layer như TL_LOWR/TL_UPPR.
+// Giữ LOWER + RAISE cùng lúc → bật ADJUST.
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
 
 // ---------- OLED (nếu bật OLED_ENABLE) ----------
 // Sofle đã bật OLED trong info.json. Code mặc định ở sofle.c:
@@ -184,8 +198,8 @@ bool oled_task_user(void) {
         case _COLEMAK_DH:
             oled_write_ln_P(PSTR("COLMK"), false);
             break;
-        case _QWERTY:
-            oled_write_ln_P(PSTR("QWRTY"), false);
+        case _GAME:
+            oled_write_ln_P(PSTR("GAME "), false);
             break;
         case _LAYER_SELECT:
             oled_write_ln_P(PSTR("SELEC"), false);
