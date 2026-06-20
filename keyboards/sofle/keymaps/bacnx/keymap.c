@@ -136,27 +136,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * LOL — LMHT. Hàng 1: TO(Colemak) F1–F5. Hàng 2: B 1–5. Hàng 3: Tab A QWER. Hàng 4: Ctrl Z X C D F. Thumb: Ctrl+6 P T G Space. Phải tắt.
+     * LOL — LMHT. Hàng 1: F23 F24 Ctrl+6 Alt+Tab Play/Pause Next (F23+F24 combo → về Colemak).
+     * Hàng 2: B 1–5. Hàng 3: Tab A QWER. Hàng 4: Ctrl Z X C D F. Thumb: G P T V Space. Phải tắt.
      */
     [_LOL] = LAYOUT(
-        TO(_COLEMAK_DH),   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+        KC_F23,  KC_F24,  LCTL(KC_6), LALT(KC_TAB), KC_MPLY, KC_MNXT,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
         KC_B,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
         KC_TAB,  KC_A,    KC_Q,    KC_W,    KC_E,    KC_R,          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
         KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_D,    KC_F,    KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-                 LCTL(KC_6), KC_P, KC_T,    KC_G,    KC_SPC,         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO
+                 KC_G,    KC_P,    KC_T,    KC_V,    KC_SPC,        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO
     ),
     // clang-format on
 };
 
 // N+E (Colemak DH HRM) → Esc; J+K (GAME layer, plain keycode) → Esc; Space+Enter (thumb) → toggle Mouse.
+// F23+F24 (LOL layer top-left "dead zone") → về Colemak DH. F23/F24 không bind trong LMHT nên bấm lẻ vô hại.
 const uint16_t PROGMEM ne_combo[]          = {RSFT_T(KC_N), RCTL_T(KC_E), COMBO_END};
 const uint16_t PROGMEM game_jk_combo[]     = {KC_J, KC_K, COMBO_END};
 const uint16_t PROGMEM space_enter_combo[] = {KC_SPC, KC_ENT, COMBO_END};
+const uint16_t PROGMEM lol_exit_combo[]    = {KC_F23, KC_F24, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(ne_combo, KC_ESC),
     COMBO(game_jk_combo, KC_ESC),
     COMBO(space_enter_combo, TG(_MOUSE)),
+    COMBO(lol_exit_combo, TO(_COLEMAK_DH)),
 };
 
 // Tri-layer thủ công: LT() không tự kích tri-layer như TL_LOWR/TL_UPPR.
