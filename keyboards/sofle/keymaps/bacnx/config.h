@@ -20,12 +20,10 @@
 #define TRI_LAYER_UPPER_LAYER 4  // _RAISE
 #define TRI_LAYER_ADJUST_LAYER 5 // _ADJUST
 
-// ---------- Home Row Mods — Sweep parity (ZMK balanced + quick-tap-ms + require-prior-idle-ms) ----------
+// ---------- Home Row Mods — Sweep parity (ZMK balanced + quick-tap-ms) ----------
 #define TAPPING_TERM   280 // ms: tap nhanh = chữ, giữ lâu = mod (ZMK tapping-term-ms)
 #define QUICK_TAP_TERM 175 // ZMK quick-tap-ms: tap lại cùng phím trong 175ms = chữ (cho gõ lặp)
-#define FLOW_TAP_TERM  150 // ZMK require-prior-idle-ms: bỏ qua hold nếu phím trước < 150ms (chống false trigger khi đang gõ)
-#define PERMISSIVE_HOLD    // mod-tap: nếu phím khác nhấn-và-thả trước khi thả mod-tap → coi là hold
-#define CHORDAL_HOLD       // hold chỉ kích nếu phím tiếp theo ở NỬA KIA (mimic ZMK "balanced" flavor)
+#define PERMISSIVE_HOLD    // mod-tap: nếu phím khác nhấn-và-thả trước khi thả mod-tap → coi là hold (ZMK balanced)
 
 // ---------- Combo (J+K → Esc) — thời gian nhấn 2 phím để kích combo ----------
 #define COMBO_TERM 50 // ms: cả J và K phải down trong 50ms (có thể tăng 80–100 nếu khó kích)
