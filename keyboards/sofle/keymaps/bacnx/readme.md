@@ -8,7 +8,7 @@ Keymap mô phỏng cảm giác **Ferris Sweep (ZMK, [bacnx/zmk-config](https://g
 |-----|----------------|--------------------------------|-------------------------------------------------------------------|
 | 0   | **COLEMAK-DH** | Mặc định / SYS + 1             | Colemak-DH, mod ở thumb ngoài                                     |
 | 1   | **GAME**       | SYS + 2                        | QWERTY thuần như bàn phím thường — không combo, không hold-tap    |
-| 2   | **LOL**        | SYS + 3                        | Liên Minh — chỉ nửa trái hoạt động                                |
+| 2   | **LOL**        | SYS + 3                        | Liên Minh — chỉ nửa trái hoạt động (cả encoder phải cũng tắt)     |
 | 3   | **SF6**        | SYS + 4                        | Street Fighter 6 — kiểu hitbox, phím mặc định Classic             |
 | 4   | **LOWER**      | Giữ thumb trái trong (LT)      | Số + ký hiệu + F1–F12                                             |
 | 5   | **RAISE**      | Giữ thumb phải trong (LT)      | Nav: ← ↓ ↑ → ở N/E/I/O, Home/End, PgUp/Dn + mod thường tay trái   |
@@ -68,7 +68,7 @@ Hàng home trái là mod thường (không tap-hold): giữ RAISE + Shift/Ctrl +
 
 | Combo           | Hành động    | Ghi chú                                                                   |
 |-----------------|--------------|---------------------------------------------------------------------------|
-| `Space + Enter` | Toggle MOUSE | Chỉ chạy ở Colemak-DH và MOUSE; bỏ qua nếu vừa gõ phím khác < 150 ms      |
+| `Space + Enter` | Toggle MOUSE | Chỉ chạy ở Colemak-DH và MOUSE; ở Colemak bỏ qua nếu vừa gõ phím < 150 ms |
 
 `COMBO_TERM = 60 ms`. Ở GAME / LOL / SF6 không có combo nào, nên phím không bị giữ lại chờ combo (không trễ).
 
@@ -81,8 +81,8 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
 ```
 | SYS  |  1  |  2  |  3  |  4  |  5  |              |  6  |  7  |  8  |  9  |  0  |  --  |
 | Esc  |  -- |  -- | W ↑ |  -- |  -- |              |  Y  |U LP |I MP |O HP |  P  |  --  |
-|  --  |  -- | A ← | S ↓ | D → |  -- |              |  H  |J LK |K MK |L HK |  ;  |  --  |
-|  --  |  -- |  -- |  -- |  -- |  -- |  --  |  |  -- |  N  |  M  |  ,  |  .  |  /  |  --  |
+|  --  |  -- | A ← | S ↓ | D → |  -- |              |  H  |J LK |K MK |L HK |  -- |  --  |
+|  --  |  -- |  -- |  -- |  -- |  -- |  --  |  |  -- |  N  |  M  |  -- |  -- |  -- |  --  |
        |  -- |  -- |  -- |  -- | W ↑ |              |Enter|Bspc |  -- |  -- |  -- |
 ```
 
@@ -94,7 +94,7 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
   - ↖ = ngón cái + áp út (↑ + ←), ↗ = ngón cái + trỏ (↑ + →)
   - Quarter-circle (↓ ↘ →): giữ ↓ bằng ngón giữa, thêm → bằng ngón trỏ, rồi nhả ↓.
   - Trái + Phải cùng lúc: SF6 tự coi là đứng yên (neutral).
-- `P`, `;`, `Y`, `H`… để trống — gán trong game cho Drive Parry / Drive Impact / Throw nếu muốn.
+- `Y`, `H`, `P`, `N`, `M` là phím chữ dư để gán phím tắt (Drive Parry / Drive Impact / Throw) trong game. `Y`/`H` có thể đã được game gán sẵn — xem trong Controls. Bên phải chỉ để phím chữ vì SF6 được báo là không gán được `; , ' [ ]`.
 - Không combo, không tap-hold, không mod → không trễ và không lỡ thoát game.
 
 ## MOUSE (giống zmk-config)
@@ -106,17 +106,18 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
        |  -- |  -- |  -- | off | off |              | off | off |  -- |  -- |  -- |
 ```
 
-- Bật/tắt: Space + Enter. Thoát: chạm 1 trong 4 thumb trong (`off`).
+- Bật/tắt: Space + Enter (hoặc SYS + 5). Thoát: chạm 1 trong 4 thumb trong (`off`). Cả bật lẫn tắt đều kích ngay khi nhấn (như `&tog`/`&to` của ZMK).
 - N/E/I/O = di chuyển; H , . / = cuộn (cùng ngón, xuống 1 hàng).
 - Phím tốc độ **giữ để dùng và nhân dồn theo từng trục**: A = chậm cả 2 trục (÷6, cuộn ÷3), R/S = nhanh ngang/dọc (×2), X/C = chậm ngang/dọc (÷4). Vd. S + X = dọc nhanh, ngang chậm.
 - QMK mousekey không có tốc độ theo trục, nên chuột chạy bằng engine riêng (`mouse_engine.c`) qua pointing device, với thông số và đơn vị giống zmk-config:
   - Di chuyển tăng tốc tuyến tính tới max trong 500 ms: ngang 2400/s, dọc 1800/s.
   - Cuộn **mượt** (hi-res), tốc độ đều 3.75 nấc/s — đúng như ZMK khi bật smooth scrolling.
+- Cuộn hi-res cần máy tính hỗ trợ HID Resolution Multiplier (Linux, Windows có). Máy không hỗ trợ (macOS, một số KVM / remote desktop) sẽ cuộn nhanh gấp 120 lần — khi đó bỏ dòng `POINTING_DEVICE_HIRES_SCROLL_ENABLE` trong `config.h` để quay về cuộn từng nấc (vẫn 3.75 nấc/s; encoder đúng `ENCODER_SCROLL_STEPS` nấc).
 
 ## Encoder
 
 - **Trái:** Volume (mặc định từ `sofle.c`).
-- **Phải:** Cuộn (qua engine chuột, cuộn hi-res); `ENCODER_SCROLL_STEPS` nấc mỗi bước.
+- **Phải:** Cuộn (qua engine chuột, cuộn hi-res); `ENCODER_SCROLL_STEPS` nấc mỗi bước. Tắt ở LOL.
 
 ## OLED
 

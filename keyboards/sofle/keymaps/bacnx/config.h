@@ -34,10 +34,12 @@
 // ---------- Combo (Space + Enter → bật/tắt MOUSE) ----------
 #define COMBO_TERM 60           // ms: 2 phím phải xuống trong 60ms (ZMK timeout-ms)
 #define COMBO_SHOULD_TRIGGER    // chỉ chạy combo ở Colemak/MOUSE (xem combo_should_trigger)
-#define COMBO_PRIOR_IDLE_MS 150 // vừa gõ phím khác < 150ms thì không kích combo (ZMK require-prior-idle-ms)
+#define COMBO_PRIOR_IDLE_MS 150 // ở Colemak: vừa gõ phím < 150ms thì không kích combo (ZMK require-prior-idle-ms)
 
 // ---------- Chuột (mouse_engine.c) — cùng đơn vị với zmk-config/Sweep.keymap ----------
-#define POINTING_DEVICE_HIRES_SCROLL_ENABLE // cuộn mượt (như CONFIG_ZMK_POINTING_SMOOTH_SCROLLING)
+// Cuộn mượt (như CONFIG_ZMK_POINTING_SMOOTH_SCROLLING). Cần host hỗ trợ HID Resolution Multiplier (Linux/Windows);
+// host không hỗ trợ (macOS, KVM…) sẽ cuộn nhanh gấp 120 lần → comment dòng dưới để cuộn từng nấc.
+#define POINTING_DEVICE_HIRES_SCROLL_ENABLE
 #define MOUSE_MOVE_VAL 1200                 // ZMK_POINTING_DEFAULT_MOVE_VAL
 #define MOUSE_MOVE_X_NUM 2                  // MMV_X_NORMAL 2 1 → ngang 2400/s
 #define MOUSE_MOVE_X_DEN 1

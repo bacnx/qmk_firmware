@@ -26,6 +26,8 @@ enum layers {
 enum custom_keycodes {
     SYS_BOOT = SAFE_RANGE, // giữ BOOT_HOLD_MS mới vào bootloader
     SF6_UP,                // "Lên" (W) cho SF6, đặt ở 2 chỗ, không nhả nhầm khi giữ cả hai
+    MS_TOGL,               // bật/tắt MOUSE ngay khi nhấn (combo Space+Enter, SYS+5)
+    MS_EXIT,               // tắt MOUSE ngay khi nhấn (thumb trong ở MOUSE); nhấn 2 thumb vẫn chỉ tắt
     // Chuột — thứ tự phải khớp me_input_t trong mouse_engine.h
     MV_LEFT,
     MV_RGHT,
@@ -105,19 +107,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * Tay trái đặt áp út/giữa/trỏ lên 3 phím home (vị trí S D F): ← ↓ →. Ngón út nghỉ.
      * "Lên" có 2 chỗ: ngón cái (kiểu hitbox) và phía trên ngón giữa (kiểu WASD).
      * Hướng chéo = bấm 2 hướng cùng lúc. Trái+Phải cùng lúc: game tự coi là đứng yên.
-     * P và ; để trống — gán trong game cho Drive Parry / Drive Impact / Throw.
+     * Y H P N M: phím chữ dư để gán phím tắt (Drive Parry / Drive Impact / Throw) trong game —
+     * Y/H có thể đã được gán sẵn, xem Controls. Chỉ để phím chữ vì SF6 được báo không nhận ; , ' [ ].
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * | SYS  |  1   |  2   |  3   |  4   |  5   |                    |  6   |  7   |  8   |  9   |  0   |  --  |
      * | Esc  |  --  |  --  | W ↑  |  --  |  --  |                    |  Y   | U LP | I MP | O HP |  P   |  --  |
-     * |  --  |  --  | A ←  | S ↓  | D →  |  --  |-------.    ,-------|  H   | J LK | K MK | L HK |  ;   |  --  |
-     * |  --  |  --  |  --  |  --  |  --  |  --  |  --   |    |  --   |  N   |  M   |  ,   |  .   |  /   |  --  |
+     * |  --  |  --  | A ←  | S ↓  | D →  |  --  |-------.    ,-------|  H   | J LK | K MK | L HK |  --  |  --  |
+     * |  --  |  --  |  --  |  --  |  --  |  --  |  --   |    |  --   |  N   |  M   |  --  |  --  |  --  |  --  |
      *            |  --  |  --  |  --  |  --  |  W ↑  |          | Enter | Bspc |  --  |  --  |  --  |
      */
     [_SF6] = LAYOUT(
         MO(_SYS), KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
         KC_ESC,   XXXXXXX, XXXXXXX, SF6_UP,  XXXXXXX, XXXXXXX,                    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
-        XXXXXXX,  XXXXXXX, KC_A,    KC_S,    KC_D,    XXXXXXX,                    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, XXXXXXX,
-        XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, XXXXXXX,
+        XXXXXXX,  XXXXXXX, KC_A,    KC_S,    KC_D,    XXXXXXX,                    KC_H,    KC_J,    KC_K,    KC_L,    XXXXXXX, XXXXXXX,
+        XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SF6_UP,                     KC_ENT,  KC_BSPC, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
@@ -139,9 +142,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * RAISE — Sweep Nav. Mũi tên ← ↓ ↑ → trên N E I O.
      * Hàng home trái = Gui/Alt/Ctrl/Shift thường (không tap-hold): giữ RAISE + Shift/Ctrl + mũi tên
      * để chọn chữ / nhảy theo từ.
-     * Hàng top: Esc Ins - PrtSc - / - PgUp Del - -
-     * Hàng home: Caps Gui Alt Ctrl Shift - / Home ← ↓ ↑ →
-     * Hàng bot : - Ctl-Z Ctl-X Ctl-C Ctl-V / End PgDn - - -
+     * (6 cột mỗi bên, từ cột ngoài cùng bên trái)
+     * Hàng top : Esc  Ins  -     PrtSc -     -    / -    PgUp Del  -  -  -
+     * Hàng home: Caps Gui  Alt   Ctrl  Shift -    / Home ←    ↓    ↑  →  -
+     * Hàng bot : -    -    Ctl-Z Ctl-X Ctl-C Ctl-V / End  PgDn -    -  -  -
      */
     [_RAISE] = LAYOUT(
         _______,  _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
@@ -177,7 +181,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, MS_BTN4,                    _______, _______, _______, _______, _______, _______,
         _______,  SP_SLOW, SP_XFST, SP_YFST, MS_BTN1, MS_BTN2,                    _______, MV_LEFT, MV_DOWN, MV_UP,   MV_RGHT, _______,
         _______,  _______, SP_XSLW, SP_YSLW, MS_BTN3, MS_BTN5, _______,  _______, _______, WH_LEFT, WH_DOWN, WH_UP,   WH_RGHT, _______,
-                  _______, _______, _______, TG(_MOUSE), TG(_MOUSE),              TG(_MOUSE), TG(_MOUSE), _______, _______, _______
+                  _______, _______, _______, MS_EXIT, MS_EXIT,                    MS_EXIT, MS_EXIT, _______, _______, _______
     ),
 
     /*
@@ -186,7 +190,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * BOOT (góc phải-trên): GIỮ 1 giây mới vào bootloader (OLED hiện BOOT!). Phím khác: tắt.
      */
     [_SYS] = LAYOUT(
-        _______,  TO(_COLEMAK_DH), TO(_GAME), TO(_LOL), TO(_SF6), TG(_MOUSE),     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SYS_BOOT,
+        _______,  TO(_COLEMAK_DH), TO(_GAME), TO(_LOL), TO(_SF6), MS_TOGL,        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SYS_BOOT,
         XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -201,15 +205,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 const uint16_t PROGMEM mouse_combo[] = {KC_SPC, KC_ENT, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(mouse_combo, TG(_MOUSE)),
+    COMBO(mouse_combo, MS_TOGL),
 };
 
-// Trong MOUSE, 2 thumb là TG(_MOUSE) → so combo theo phím của layer Colemak để Space+Enter vẫn tắt được.
+// Trong MOUSE, 2 thumb là MS_EXIT → so combo theo phím của layer Colemak để Space+Enter vẫn tắt được.
 uint8_t combo_ref_from_layer(uint8_t layer) {
     return layer == _MOUSE ? _COLEMAK_DH : layer;
 }
 
 // Giống require-prior-idle-ms của ZMK: vừa gõ phím khác < COMBO_PRIOR_IDLE_MS thì không kích combo.
+// Chỉ tính phím gõ thật (chữ/số/ký hiệu/media), không tính mod, phím layer, phím chuột — như ZMK.
 static uint32_t last_other_press;
 
 static bool is_mouse_combo_key(keyrecord_t *record) {
@@ -218,7 +223,16 @@ static bool is_mouse_combo_key(keyrecord_t *record) {
 }
 
 bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed && !is_mouse_combo_key(record)) {
+    if (!record->event.pressed || is_mouse_combo_key(record)) {
+        return true;
+    }
+    uint16_t kc = keycode;
+    if (IS_QK_LAYER_TAP(kc)) {
+        kc = QK_LAYER_TAP_GET_TAP_KEYCODE(kc);
+    } else if (IS_QK_MODS(kc)) {
+        kc = QK_MODS_GET_BASIC_KEYCODE(kc);
+    }
+    if (IS_BASIC_KEYCODE(kc) || IS_CONSUMER_KEYCODE(kc) || IS_SYSTEM_KEYCODE(kc)) {
         last_other_press = timer_read32();
     }
     return true;
@@ -227,8 +241,9 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
 bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
     switch (get_highest_layer(layer_state | default_layer_state)) {
         case _COLEMAK_DH:
-        case _MOUSE:
             return timer_elapsed32(last_other_press) >= COMBO_PRIOR_IDLE_MS;
+        case _MOUSE:
+            return true; // không gõ chữ ở MOUSE; luôn cho thoát bằng combo (tránh thumb thứ 2 rơi xuống Enter/Space)
         default:
             return false;
     }
@@ -255,6 +270,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             } else if (sf6_up_count > 0 && --sf6_up_count == 0) {
                 unregister_code(KC_W);
+            }
+            return false;
+
+        case MS_TOGL:
+            if (record->event.pressed) {
+                layer_invert(_MOUSE);
+            }
+            return false;
+
+        case MS_EXIT:
+            if (record->event.pressed) {
+                layer_off(_MOUSE);
             }
             return false;
 
@@ -396,10 +423,12 @@ bool oled_task_user(void) {
 }
 #endif
 
-// ---------- Encoder: trái = volume (mặc định sofle.c), phải = cuộn (qua engine chuột, cuộn hi-res) ----------
+// ---------- Encoder: trái = volume (mặc định sofle.c), phải = cuộn (qua engine chuột, cuộn hi-res; tắt ở LOL) ----------
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 1) {
-        me_wheel_notches(0, clockwise ? -ENCODER_SCROLL_STEPS : ENCODER_SCROLL_STEPS);
+        if (get_highest_layer(layer_state | default_layer_state) != _LOL) { // LOL: mảnh phải tắt
+            me_wheel_notches(0, clockwise ? -ENCODER_SCROLL_STEPS : ENCODER_SCROLL_STEPS);
+        }
         return false; // đã xử lý, không chạy hành vi mặc định (PgUp/PgDn)
     }
     return true; // encoder trái: để default (volume)
