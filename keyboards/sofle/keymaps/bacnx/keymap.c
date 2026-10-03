@@ -25,7 +25,6 @@ enum layers {
 
 enum custom_keycodes {
     SYS_BOOT = SAFE_RANGE, // giữ BOOT_HOLD_MS mới vào bootloader
-    SF6_UP,                // "Lên" (W) cho SF6, đặt ở 2 chỗ, không nhả nhầm khi giữ cả hai
     MS_TOGL,               // bật/tắt MOUSE ngay khi nhấn (combo Space+Enter, SYS+5)
     MS_EXIT,               // tắt MOUSE ngay khi nhấn (thumb trong ở MOUSE); nhấn 2 thumb vẫn chỉ tắt
     // Chuột — thứ tự phải khớp me_input_t trong mouse_engine.h
@@ -102,26 +101,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * SF6 (layer 3) — Street Fighter 6, kiểu hitbox, gửi đúng phím mặc định Classic của game:
-     *   Hướng: W↑ A← S↓ D→     Đấm: U I O = LP MP HP     Đá: J K L = LK MK HK
-     * Tay trái đặt áp út/giữa/trỏ lên 3 phím home (vị trí S D F): ← ↓ →. Ngón út nghỉ.
-     * "Lên" có 2 chỗ: ngón cái (kiểu hitbox) và phía trên ngón giữa (kiểu WASD).
+     * SF6 (layer 3) — Street Fighter 6 (Classic), kiểu hitbox, gửi đúng phím mặc định của game:
+     *   Hướng: W↑ A← S↓ D→   Đấm: U I O = LP MP HP   Đá: J K L = LK MK HK   Y = Drive Impact   H = Drive Parry
+     * Tay trái: áp út/giữa/trỏ trên 3 phím home (vị trí S D F) = ← ↓ →, ngón cái = ↑. Ngón út nghỉ.
      * Hướng chéo = bấm 2 hướng cùng lúc. Trái+Phải cùng lúc: game tự coi là đứng yên.
-     * Y H P N M: phím chữ dư để gán phím tắt (Drive Parry / Drive Impact / Throw) trong game —
-     * Y/H có thể đã được gán sẵn, xem Controls. Chỉ để phím chữ vì SF6 được báo không nhận ; , ' [ ].
+     * Phím ngoài trận (menu) dồn hết xuống 2 hàng cuối bên trái; trong trận chúng không có tác dụng:
+     *   F = Confirm, Esc = Back, Tab = Multi Menu, Q/E = tab trước/sau (E: Drive Link),
+     *   Z/C = tab phụ, R = Training / Battle Settings / sửa phím, T = CFN Players / cài đặt nhân vật,
+     *   Space = điện thoại avatar (Battle Hub). Bksp (ngón cái phải) = View: reset vị trí trong Training.
+     * Gán trong game (Controls → R): N = Throw (LP+LK), B = Taunt (góc ngoài, khó bấm nhầm). P, M: phím dư.
      * ,-----------------------------------------.                    ,-----------------------------------------.
-     * | SYS  |  1   |  2   |  3   |  4   |  5   |                    |  6   |  7   |  8   |  9   |  0   |  --  |
-     * | Esc  |  --  |  --  | W ↑  |  --  |  --  |                    |  Y   | U LP | I MP | O HP |  P   |  --  |
-     * |  --  |  --  | A ←  | S ↓  | D →  |  --  |-------.    ,-------|  H   | J LK | K MK | L HK |  --  |  --  |
-     * |  --  |  --  |  --  |  --  |  --  |  --  |  --   |    |  --   |  N   |  M   |  --  |  --  |  --  |  --  |
-     *            |  --  |  --  |  --  |  --  |  W ↑  |          | Enter | Bspc |  --  |  --  |  --  |
+     * | SYS  |  --  |  --  |  --  |  --  |  --  |                    |  --  |  --  |  --  |  --  |  --  |  --  |
+     * |  --  |  --  |  --  |  --  |  --  |  --  |                    | Y DI | U LP | I MP | O HP |  P   |  --  |
+     * |  --  |  --  | A ←  | S ↓  | D →  |  --  |-------.    ,-------| H DP | J LK | K MK | L HK |  --  |  --  |
+     * |  T   |  Z   |  Q   |  R   |  E   |  C   |  --   |    |  --   |N Thrw|  M   |  --  |  --  |  --  |B Tnt |
+     *            | Space| Tab  | Esc  |  F   |  W ↑  |          |  --   | Bspc |  --  |  --  |  --  |
      */
     [_SF6] = LAYOUT(
-        MO(_SYS), KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    XXXXXXX,
-        KC_ESC,   XXXXXXX, XXXXXXX, SF6_UP,  XXXXXXX, XXXXXXX,                    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
+        MO(_SYS), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
         XXXXXXX,  XXXXXXX, KC_A,    KC_S,    KC_D,    XXXXXXX,                    KC_H,    KC_J,    KC_K,    KC_L,    XXXXXXX, XXXXXXX,
-        XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SF6_UP,                     KC_ENT,  KC_BSPC, XXXXXXX, XXXXXXX, XXXXXXX
+        KC_T,     KC_Z,    KC_Q,    KC_R,    KC_E,    KC_C,    XXXXXXX,  XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX, KC_B,
+                  KC_SPC,  KC_TAB,  KC_ESC,  KC_F,    KC_W,                       XXXXXXX, KC_BSPC, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
     /*
@@ -252,7 +253,6 @@ bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode
 // ============ Phím tùy chỉnh ============
 static bool     boot_held;
 static uint32_t boot_timer;
-static uint8_t  sf6_up_count;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -260,16 +260,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             boot_held = record->event.pressed;
             if (boot_held) {
                 boot_timer = timer_read32();
-            }
-            return false;
-
-        case SF6_UP:
-            if (record->event.pressed) {
-                if (sf6_up_count++ == 0) {
-                    register_code(KC_W);
-                }
-            } else if (sf6_up_count > 0 && --sf6_up_count == 0) {
-                unregister_code(KC_W);
             }
             return false;
 
