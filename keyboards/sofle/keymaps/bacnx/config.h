@@ -15,22 +15,36 @@
 #define SPLIT_ACTIVITY_ENABLE
 #define OLED_TIMEOUT 5 * 60000 // ms: tắt OLED sau 5m không hoạt động (dùng chung cả 2 nửa)
 
-// ---------- Tri-layer (giữ LOWER + RAISE → ADJUST) ----------
-#define TRI_LAYER_LOWER_LAYER 3  // _LOWER
-#define TRI_LAYER_UPPER_LAYER 4  // _RAISE
-#define TRI_LAYER_ADJUST_LAYER 5 // _ADJUST
+// ---------- Bootloader ----------
+// Bootmagic: giữ phím góc ngoài-trên của nửa đang cắm USB rồi cắm vào → bootloader (và xoá EEPROM).
+// Nửa trái: [0,0] (mặc định). Nửa phải: [5,0].
+#define BOOTMAGIC_ROW_RIGHT 5
+#define BOOTMAGIC_COLUMN_RIGHT 0
+// Phím BOOT trong layer SYS phải giữ ngần này (ms) mới vào bootloader.
+#define BOOT_HOLD_MS 1000
 
-// ---------- Home Row Mods — Sweep parity (ZMK balanced + quick-tap-ms) ----------
-#define TAPPING_TERM   280 // ms: tap nhanh = chữ, giữ lâu = mod (ZMK tapping-term-ms)
-#define QUICK_TAP_TERM 175 // ZMK quick-tap-ms: tap lại cùng phím trong 175ms = chữ (cho gõ lặp)
-#define PERMISSIVE_HOLD    // mod-tap: nếu phím khác nhấn-và-thả trước khi thả mod-tap → coi là hold (ZMK balanced)
+// ---------- NKRO: bật mặc định (game cần nhiều phím cùng lúc) ----------
+#define NKRO_DEFAULT_ON true
 
-// ---------- Combo (J+K → Esc) — thời gian nhấn 2 phím để kích combo ----------
-#define COMBO_TERM 50 // ms: cả J và K phải down trong 50ms (có thể tăng 80–100 nếu khó kích)
+// ---------- Layer-tap ở thumb trong (Bspc/LOWER, Tab/RAISE) — giống &lt trong zmk-config ----------
+#define TAPPING_TERM   200 // ms: giữ lâu hơn → layer (ZMK tapping-term-ms)
+#define QUICK_TAP_TERM 175 // tap rồi giữ lại cùng phím trong 175ms → lặp Bspc/Tab (ZMK quick-tap-ms)
+#define PERMISSIVE_HOLD    // phím khác nhấn-và-thả trong lúc giữ → layer (ZMK balanced)
 
-// ---------- Encoder phải: scroll chuột — điều chỉnh tốc độ ----------
-// Mỗi bước encoder = ENCODER_SCROLL_STEPS lần gửi scroll; mỗi lần = MOUSEKEY_WHEEL_DELTA đơn vị.
-// Tăng ENCODER_SCROLL_STEPS (2, 3, 4…) hoặc MOUSEKEY_WHEEL_DELTA (2, 3…) = scroll nhanh hơn.
-#define ENCODER_SCROLL_STEPS 2 // số “bước” scroll mỗi lần xoay 1 nấc encoder (1 = chậm, 3–4 = nhanh)
-#define MOUSEKEY_WHEEL_DELTA 1 // đơn vị scroll mỗi bước (1–4, max 127); tăng = scroll dày hơn mỗi nấc
-#define MOUSEKEY_WHEEL_DELAY 0 // 0 = phản hồi ngay, không trễ
+// ---------- Combo (Space + Enter → bật/tắt MOUSE) ----------
+#define COMBO_TERM 60           // ms: 2 phím phải xuống trong 60ms (ZMK timeout-ms)
+#define COMBO_SHOULD_TRIGGER    // chỉ chạy combo ở Colemak/MOUSE (xem combo_should_trigger)
+#define COMBO_PRIOR_IDLE_MS 150 // vừa gõ phím khác < 150ms thì không kích combo (ZMK require-prior-idle-ms)
+
+// ---------- Chuột (mouse_engine.c) — cùng đơn vị với zmk-config/Sweep.keymap ----------
+#define POINTING_DEVICE_HIRES_SCROLL_ENABLE // cuộn mượt (như CONFIG_ZMK_POINTING_SMOOTH_SCROLLING)
+#define MOUSE_MOVE_VAL 1200                 // ZMK_POINTING_DEFAULT_MOVE_VAL
+#define MOUSE_MOVE_X_NUM 2                  // MMV_X_NORMAL 2 1 → ngang 2400/s
+#define MOUSE_MOVE_X_DEN 1
+#define MOUSE_MOVE_Y_NUM 3 // MMV_Y_NORMAL 3 2 → dọc 1800/s
+#define MOUSE_MOVE_Y_DEN 2
+#define MOUSE_MOVE_TIME_TO_MAX 500 // ms để đạt tốc độ max (&mmv time-to-max-speed-ms)
+#define MOUSE_SCROLL_VAL 60        // ZMK_POINTING_DEFAULT_SCRL_VAL: 60 = 3.75 nấc/giây, tốc độ đều
+
+// ---------- Encoder phải: cuộn ----------
+#define ENCODER_SCROLL_STEPS 2 // số nấc cuộn mỗi lần xoay 1 nấc encoder (1 = chậm, 3–4 = nhanh)
