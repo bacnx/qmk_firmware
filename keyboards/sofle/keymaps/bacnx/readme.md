@@ -79,23 +79,48 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
 ## SF6 (Street Fighter 6, Classic)
 
 ```
-| SYS  |  1  |  2  |  3  |  4  |  5  |              |  6  |  7  |  8  |  9  |  0  |  --  |
-| Esc  |  -- |  -- | W ↑ |  -- |  -- |              |  Y  |U LP |I MP |O HP |  P  |  --  |
-|  --  |  -- | A ← | S ↓ | D → |  -- |              |  H  |J LK |K MK |L HK |  -- |  --  |
-|  --  |  -- |  -- |  -- |  -- |  -- |  --  |  |  -- |  N  |  M  |  -- |  -- |  -- |  --  |
-       |  -- |  -- |  -- |  -- | W ↑ |              |Enter|Bspc |  -- |  -- |  -- |
+| SYS  |  -- |  -- |  -- |  -- |  -- |              |  -- |  -- |  -- |  -- |  -- |  --  |
+|  --  |  -- |  -- |  -- |  -- |  -- |              |Y DI |U LP |I MP |O HP |  P  |  --  |
+|  --  |  -- | A ← | S ↓ | D → |  -- |              |H DP |J LK |K MK |L HK |  -- |  --  |
+|  T   |  Z  |  Q  |  R  |  E  |  C  |  --  |  |  -- |N Thr|  ←  |  ↓  |  ↑  |  →  |B Tnt |
+       |Space| Tab | Esc |  F  | W ↑ |              |  -- |Bksp |  -- |  -- |  -- |
 ```
 
-- Gửi đúng phím **mặc định Classic** của SF6 (WASD + U I O / J K L), nên không cần chỉnh trong game.
-- Tay trái đặt **áp út / giữa / trỏ** lên 3 phím home: **← ↓ →**. Ngón út nghỉ, ngón trỏ (khoẻ) bấm →.
-- **Lên** có 2 chỗ: **ngón cái** (kiểu hitbox, khuyên dùng) hoặc phía trên ngón giữa (kiểu WASD).
+**Trong trận** (gửi đúng phím mặc định Classic của SF6, nên hầu hết không cần chỉnh):
+
+- Tay trái đặt **áp út / giữa / trỏ** lên 3 phím home: **← ↓ →**; **ngón cái = ↑** (kiểu hitbox). Ngón út nghỉ.
 - **Hướng chéo = bấm 2 hướng cùng lúc**, mỗi hướng một ngón:
   - ↙ = giữa + áp út (↓ + ←), ↘ = giữa + trỏ (↓ + →)
   - ↖ = ngón cái + áp út (↑ + ←), ↗ = ngón cái + trỏ (↑ + →)
   - Quarter-circle (↓ ↘ →): giữ ↓ bằng ngón giữa, thêm → bằng ngón trỏ, rồi nhả ↓.
   - Trái + Phải cùng lúc: SF6 tự coi là đứng yên (neutral).
-- `Y`, `H`, `P`, `N`, `M` là phím chữ dư để gán phím tắt (Drive Parry / Drive Impact / Throw) trong game. `Y`/`H` có thể đã được game gán sẵn — xem trong Controls. Bên phải chỉ để phím chữ vì SF6 được báo là không gán được `; , ' [ ]`.
-- Không combo, không tap-hold, không mod → không trễ và không lỡ thoát game.
+- Cột trong cùng tay phải (ngón trỏ) là các **phím tắt hệ thống**:
+  - `Y` = **Drive Impact** (HP+HK), `H` = **Drive Parry** (MP+MK): mặc định của game.
+  - `N` = **Throw** (LP+LK), `B` (góc ngoài-dưới, khó bấm nhầm) = **Taunt**: phải tự gán trong game (xem dưới).
+  - Đừng giữ MP/MK rồi bấm phím Parry: game bỏ qua phím tắt nếu một trong hai nút của nó đang được giữ.
+- OD (2 đấm / 2 đá) bấm 2 phím cạnh nhau theo hàng ngang, không cần phím tắt. `P`: phím dư.
+- Không combo, không tap-hold, không mod, không macro → không trễ, hợp lệ với luật giải (chỉ dùng phím tắt có sẵn của game).
+
+**Ngoài trận** (phím menu, dồn hết xuống 2 hàng cuối bên trái; trong trận chúng không làm gì):
+
+| Phím  | Chức năng                                                               |
+|-------|-------------------------------------------------------------------------|
+| F     | Confirm                                                                 |
+| Esc   | Back (khi đấu offline/Training: mở menu pause)                          |
+| Tab   | Multi Menu                                                              |
+| Q / E | Tab trước / sau (E ở menu chính: Drive Link)                            |
+| Z / C | Tab phụ / đổi trang                                                     |
+| R     | Training (menu chính), Battle Settings (Battle Hub), sửa phím bàn phím (Controls) |
+| T     | CFN Players List / cài đặt riêng nhân vật                               |
+| Space | Điện thoại avatar (Battle Hub, World Tour)                              |
+| ← ↓ ↑ → | (hàng dưới bên phải, cùng thứ tự RAISE) Camera ở Battle Hub / World Tour |
+| Bksp  | (ngón cái phải) View: reset vị trí trong Training                       |
+
+Mẹo: bật **Options → Game → Pause Menu on Long Hold** để Esc/Tab phải giữ lâu mới pause.
+
+**Gán Throw / Taunt trong game:** Tab → Options → tab **Controls** (chuyển tab bằng Q/E) → bấm **R** để chuyển từ danh sách nút tay cầm sang **phím bàn phím** → chọn dòng LP+LK (Throw) / Taunt → F → bấm phím `N` / `B` trên layer SF6.
+
+**Lưu ý bộ gõ tiếng Việt:** tắt bộ gõ (chuyển sang tiếng Anh) trước khi chơi. Telex biến `dd`, `aa`, `oo`, `w`, `j`, `s`… thành phím Backspace giả + chữ có dấu, nên game nhận sai hướng/nút (ví dụ bấm → lần 2 ra Backspace).
 
 ## MOUSE (giống zmk-config)
 
