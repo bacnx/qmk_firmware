@@ -82,7 +82,7 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
 | SYS  |  -- |  -- |  -- |  -- |  -- |              |  -- |  -- |  -- |  -- |  -- |  --  |
 |  --  |  -- |  -- |  -- |  -- |  -- |              |Y DI |U LP |I MP |O HP |  P  |  --  |
 |  --  |  -- | A ← | S ↓ | D → |  -- |              |H DP |J LK |K MK |L HK |  -- |  --  |
-|  T   |  Z  |  Q  |  R  |  E  |  C  |  --  |  |  -- |N Thr|  M  |  -- |  -- |  -- |B Tnt |
+|  T   |  Z  |  Q  |  R  |  E  |  C  |  --  |  |  -- |N Thr|  ←  |  ↓  |  ↑  |  →  |B Tnt |
        |Space| Tab | Esc |  F  | W ↑ |              |  -- |Bksp |  -- |  -- |  -- |
 ```
 
@@ -98,7 +98,7 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
   - `Y` = **Drive Impact** (HP+HK), `H` = **Drive Parry** (MP+MK): mặc định của game.
   - `N` = **Throw** (LP+LK), `B` (góc ngoài-dưới, khó bấm nhầm) = **Taunt**: phải tự gán trong game (xem dưới).
   - Đừng giữ MP/MK rồi bấm phím Parry: game bỏ qua phím tắt nếu một trong hai nút của nó đang được giữ.
-- OD (2 đấm / 2 đá) bấm 2 phím cạnh nhau theo hàng ngang, không cần phím tắt. `P`, `M`: phím dư.
+- OD (2 đấm / 2 đá) bấm 2 phím cạnh nhau theo hàng ngang, không cần phím tắt. `P`: phím dư.
 - Không combo, không tap-hold, không mod, không macro → không trễ, hợp lệ với luật giải (chỉ dùng phím tắt có sẵn của game).
 
 **Ngoài trận** (phím menu, dồn hết xuống 2 hàng cuối bên trái; trong trận chúng không làm gì):
@@ -113,6 +113,7 @@ QWERTY thuần như bàn phím thường, không combo / hold-tap. Mod ở thumb
 | R     | Training (menu chính), Battle Settings (Battle Hub), sửa phím bàn phím (Controls) |
 | T     | CFN Players List / cài đặt riêng nhân vật                               |
 | Space | Điện thoại avatar (Battle Hub, World Tour)                              |
+| ← ↓ ↑ → | (hàng dưới bên phải, cùng thứ tự RAISE) Camera ở Battle Hub / World Tour |
 | Bksp  | (ngón cái phải) View: reset vị trí trong Training                       |
 
 Mẹo: bật **Options → Game → Pause Menu on Long Hold** để Esc/Tab phải giữ lâu mới pause.

@@ -109,19 +109,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *   F = Confirm, Esc = Back, Tab = Multi Menu, Q/E = tab trước/sau (E: Drive Link),
      *   Z/C = tab phụ, R = Training / Battle Settings / sửa phím, T = CFN Players / cài đặt nhân vật,
      *   Space = điện thoại avatar (Battle Hub). Bksp (ngón cái phải) = View: reset vị trí trong Training.
-     * Gán trong game (Controls → R): N = Throw (LP+LK), B = Taunt (góc ngoài, khó bấm nhầm). P, M: phím dư.
+     * Gán trong game (Controls → R): N = Throw (LP+LK), B = Taunt (góc ngoài, khó bấm nhầm). P: phím dư.
+     * Mũi tên ← ↓ ↑ → (hàng dưới, cùng thứ tự RAISE) = camera ở Battle Hub / World Tour; trong trận không gán gì.
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * | SYS  |  --  |  --  |  --  |  --  |  --  |                    |  --  |  --  |  --  |  --  |  --  |  --  |
      * |  --  |  --  |  --  |  --  |  --  |  --  |                    | Y DI | U LP | I MP | O HP |  P   |  --  |
      * |  --  |  --  | A ←  | S ↓  | D →  |  --  |-------.    ,-------| H DP | J LK | K MK | L HK |  --  |  --  |
-     * |  T   |  Z   |  Q   |  R   |  E   |  C   |  --   |    |  --   |N Thrw|  M   |  --  |  --  |  --  |B Tnt |
+     * |  T   |  Z   |  Q   |  R   |  E   |  C   |  --   |    |  --   |N Thrw|  ←   |  ↓   |  ↑   |  →   |B Tnt |
      *            | Space| Tab  | Esc  |  F   |  W ↑  |          |  --   | Bspc |  --  |  --  |  --  |
      */
     [_SF6] = LAYOUT(
         MO(_SYS), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX,
         XXXXXXX,  XXXXXXX, KC_A,    KC_S,    KC_D,    XXXXXXX,                    KC_H,    KC_J,    KC_K,    KC_L,    XXXXXXX, XXXXXXX,
-        KC_T,     KC_Z,    KC_Q,    KC_R,    KC_E,    KC_C,    XXXXXXX,  XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX, KC_B,
+        KC_T,     KC_Z,    KC_Q,    KC_R,    KC_E,    KC_C,    XXXXXXX,  XXXXXXX, KC_N,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_B,
                   KC_SPC,  KC_TAB,  KC_ESC,  KC_F,    KC_W,                       XXXXXXX, KC_BSPC, XXXXXXX, XXXXXXX, XXXXXXX
     ),
 
